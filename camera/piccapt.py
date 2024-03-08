@@ -64,13 +64,20 @@ while (True):
 
     ret, frame = vid.read()
 
-    cv2.imwrite("a.jpg", frame)
+    import datetime
+
+    date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
+    cv2.imwrite("C:\\Users\\sidharth\\Documents\\GitHub\\Aicctv\\media\\det\\"+date+".jpg", frame)
     cv2.imshow('frame', frame)
     cv2.waitKey(20)
     if cv2.waitKey(50) & 0xFF == ord('q'):
         break
-    picture_of_others = face_recognition.load_image_file("a.jpg")
+
+    picture_of_others = face_recognition.load_image_file("C:\\Users\\sidharth\\Documents\\GitHub\\Aicctv\\media\\det\\"+date+".jpg")
+
     # print(pth)
+    path="/media/det/"+date+".jpg"
     others_face_encoding = face_recognition.face_encodings(picture_of_others)
 
     totface = len(others_face_encoding)
@@ -99,26 +106,21 @@ while (True):
 
                     # qry = "INSERT INTO `myapp_detection` (`date`,`time`,`CRIMINAL_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "')"
 
-                    qry="INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','criminal')"
+                    qry="INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','criminal','"+path+"')"
                     db.insert(qry)
 
                     k=k+1
                 elif types[l] == 'familiy':
                     # qry = "INSERT INTO `myapp_detection` (`date`,`time`,`CRIMINAL_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "')"
 
-                    qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`) VALUES (CURDATE(),CURTIME(),'" + str(
-                        knownids[l]) + "','"+knownname[l]+"','criminal' )"
+                    qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','criminal','"+path+"' )"
                     db.insert(qry)
-
                     k = k + 1
-
-
-
             l = l + 1
 
 
     if k==0:
-        qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`) VALUES (CURDATE(),CURTIME(),'" + str("0") + "','unknown detected','unknown')"
+        qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`) VALUES (CURDATE(),CURTIME(),'" + str("0") + "','unknown detected','unknown','"+path+"')"
         db.insert(qry)
 
 
