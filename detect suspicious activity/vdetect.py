@@ -80,7 +80,8 @@ def video_mamonreader(cv2,filename):
     for i in resq:
         s = i["photo"]
         s = s.replace("/media/", "")
-        pth = "C:\\Users\\sidha\\OneDrive\\Documents\\Git\\PROJECT\\Aicctv\\media\\" + s
+        pth = "C:\\Users\\sidharth\\Documents\\GitHub\\Aicctv\\media\\" + s
+
         picture_of_me = face_recognition.load_image_file(pth)
         my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
         knownimage.append(my_face_encoding)
@@ -88,7 +89,7 @@ def video_mamonreader(cv2,filename):
 
         print(knownids,'cccccc')
 
-    frames = np.zeros((30, 160, 160, 3), dtype=np.float)
+    frames = np.zeros((30, 160, 160, 3), dtype=np.cfloat)
     i=0
     # print(frames.shape)
     vc = cv2.VideoCapture(filename)

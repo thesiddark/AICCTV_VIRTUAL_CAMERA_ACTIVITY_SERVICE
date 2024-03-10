@@ -31,9 +31,9 @@ for i in res:
     types.append("criminal")
 
 
+userid="4"
 
-
-qry2="SELECT * FROM `myapp_family` WHERE `USER_id`='1'"
+qry2="SELECT * FROM `myapp_family` WHERE `USER_id`='28'"
 res2=db.selectOne(qry2)
 
 
@@ -106,21 +106,21 @@ while (True):
 
                     # qry = "INSERT INTO `myapp_detection` (`date`,`time`,`CRIMINAL_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "')"
 
-                    qry="INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','criminal','"+path+"')"
+                    qry="INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`,`USER_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','criminal','"+path+"','"+userid+"')"
                     db.insert(qry)
 
                     k=k+1
                 elif types[l] == 'familiy':
                     # qry = "INSERT INTO `myapp_detection` (`date`,`time`,`CRIMINAL_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "')"
 
-                    qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','criminal','"+path+"' )"
+                    qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`,`USER_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','criminal','"+path+"','"+userid+"')"
                     db.insert(qry)
                     k = k + 1
             l = l + 1
 
 
     if k==0:
-        qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`) VALUES (CURDATE(),CURTIME(),'" + str("0") + "','unknown detected','unknown','"+path+"')"
+        qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`,`USER_id`) VALUES (CURDATE(),CURTIME(),'" + str("0") + "','unknown detected','unknown','"+path+"','"+userid+"')"
         db.insert(qry)
 
 
