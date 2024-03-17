@@ -33,18 +33,20 @@ for i in res:
 
 userid="4"
 
-qry2="SELECT * FROM `myapp_family` WHERE `USER_id`='28'"
-res2=db.selectOne(qry2)
+qry2="SELECT * FROM `myapp_family` WHERE `USER_id`='4'"
+res2=db.select(qry2)
+print(res2)
 
-
-for j in res:
+for j in res2:
     s = j["photo"]
-    s = s.replace("/media/", "")
-    pth = "C:\\Users\\sidharth\\Documents\\GitHub\\Aicctv\\media\\" + s
+    s = s.replace("/media/family/", "")
+    pth = "C:\\Users\\sidharth\\Documents\\GitHub\\Aicctv\\media\\family\\" + s
+    print(pth)
     picture_of_me = face_recognition.load_image_file(pth)
     my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
     knownimage.append(my_face_encoding)
     types.append("family")
+    knownids.append(j['id'])
     knownname.append(j['name'])
 
 
@@ -110,10 +112,10 @@ while (True):
                     db.insert(qry)
 
                     k=k+1
-                elif types[l] == 'familiy':
+                elif types[l] == 'family':
                     # qry = "INSERT INTO `myapp_detection` (`date`,`time`,`CRIMINAL_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "')"
 
-                    qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`,`USER_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','criminal','"+path+"','"+userid+"')"
+                    qry = "INSERT INTO `myapp_detection`(`date`,`time`,`did`,`name`,`type`,`photo`,`USER_id`) VALUES (CURDATE(),CURTIME(),'" + str(knownids[l]) + "','"+knownname[l]+"','family','"+path+"','"+userid+"')"
                     db.insert(qry)
                     k = k + 1
             l = l + 1

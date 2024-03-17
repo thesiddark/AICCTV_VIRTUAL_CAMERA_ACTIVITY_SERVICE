@@ -17,7 +17,7 @@ from DBConnection import Database
 from tensorflow.python.client import device_lib
 # print(device_lib.list_local_devices())
 
-def mamon_videoFightModel2(tf,wight='mamonbest947oscombo-drive.hdfs'):
+def mamon_videoFightModel2(tf,weight='mamonbest947oscombo-drive.hdfs'):
     layers = tf.keras.layers
     models = tf.keras.models
     losses = tf.keras.losses
@@ -54,7 +54,7 @@ def mamon_videoFightModel2(tf,wight='mamonbest947oscombo-drive.hdfs'):
     model.add(layers.Dense(num_classes, activation="sigmoid"))
 
     adam = optimizers.Adam(lr=0.0005, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
-    model.load_weights(wight)
+    model.load_weights(weight)
     rms = optimizers.RMSprop()
 
     model.compile(loss='binary_crossentropy', optimizer=adam, metrics=["accuracy"])
@@ -69,25 +69,25 @@ model22 = mamon_videoFightModel2(tf)
 
 def video_mamonreader(cv2,filename):
     db = Database()
-    qryq = "SELECT * FROM `myapp_criminals` "
-    resq = db.select(qryq)
-    print(resq,'criminals')
+    # qryq = "SELECT * FROM `myapp_criminals` "
+    # resq = db.select(qryq)
+    # print(resq,'criminals')
 
 
     knownimage = []
     knownids = []
 
-    for i in resq:
-        s = i["photo"]
-        s = s.replace("/media/", "")
-        pth = "C:\\Users\\sidharth\\Documents\\GitHub\\Aicctv\\media\\" + s
-
-        picture_of_me = face_recognition.load_image_file(pth)
-        my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
-        knownimage.append(my_face_encoding)
-        knownids.append(i['id'])
-
-        print(knownids,'cccccc')
+    # for i in resq:
+    #     s = i["photo"]
+    #     s = s.replace("/media/", "")
+    #     pth = "C:\\Users\\sidharth\\Documents\\GitHub\\Aicctv\\media\\" + s
+    #
+    #     picture_of_me = face_recognition.load_image_file(pth)
+    #     my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+    #     knownimage.append(my_face_encoding)
+    #     knownids.append(i['id'])
+    #
+    #     print(knownids,'cccccc')
 
     frames = np.zeros((30, 160, 160, 3), dtype=np.cfloat)
     i=0
@@ -107,7 +107,7 @@ def video_mamonreader(cv2,filename):
                 rval, frame = vc.read()
 
                 lkframes.append(frame)
-                # cv2.imshow("test", frame)
+                cv2.imshow("test", frame)
                 cv2.waitKey(1)
                 frm = resize(frame,(160,160,3))
                 frm = np.expand_dims(frm,axis=0)
@@ -149,43 +149,43 @@ def video_mamonreader(cv2,filename):
                     ms = mediapath + filename
                     db = Database()
                     # id = db.insert("INSERT INTO `myapp_violence` (`photo`,`date`,`time`) VALUES ('" + "/media/" + filename + "',CURDATE(),CURTIME())")
-                    # id = db.insert("INSERT INTO `myapp_suspiciousactivities` (`date`,`place`,`time`,`photo`,`activity`,`CRIMINAL_id`) "
-                    #                "VALUES (CURDATE(),'kozhikode',CURTIME(),'" + "/media/" + filename + "','Suspicious Activity Detected',str(qryq))")
+                    id = db.insert("INSERT INTO `myapp_suspiciousactivities` (`date`,`place`,`time`,`photo`,`activity`) "
+                                   "VALUES (CURDATE(),'kozhikode',CURTIME(),'" + "/media/" + filename + "','Suspicious Activity Detected')")
 
 
-                    for i in lkframes:
-                        cv2.imwrite(ms, i)
-                        picture_of_others = face_recognition.load_image_file(ms)
-                        # print(pth)
-                        others_face_encoding = face_recognition.face_encodings(picture_of_others)
-
-                        totface = len(others_face_encoding)
-                        # print("aaaaa", totface)
-                        for i in range(0, totface):
-                            res = face_recognition.compare_faces(knownimage, others_face_encoding[i], tolerance=0.45)
-                            l = 0
-                            for j in res:
-                                if j == True:
-
-                                    # qryChk = "SELECT * FROM `myapp_suspiciousactivities` where `CRIMINAL_id`='"+str(knownids[i])+"' and `VIOLENCE_id`='"+str(id)+"'"
-                                    qryChk = "SELECT * FROM `myapp_suspiciousactivities` where `CRIMINAL_id`='" + str(knownids[i]) + "' "
-
-                                    print(qryChk,'ssssssssssssss')
-
-                                    resChk = db.select(qryChk)
-                                    print(len(resChk), 'leno')
-                                    if len(resChk)>0:
-                                        continue
-                                    else:
-
-                                        # qry = "INSERT INTO `myapp_violencesub` (`STUDENT_id`,`VIOLENCE_id`) VALUES ('" + str(knownids[i]) + "','" + str(id) + "')"
-                                        # db.insert(qry)
-                                        qry = "INSERT INTO `myapp_suspiciousactivities` (`date`,`place`,`time`,`photo`,`activity`,`CRIMINAL_id`) VALUES (CURDATE(),'kozhikode',CURTIME(),'" + "/media/" + filename + "', 'Suspicious Activity Detected','" + str(knownids[i]) + "')"
-                                        print(qry,'qqqqqqqqqqqqqq')
-                                        res=db.insert(qry)
-                                        print(res,'iiiiiii')
-
-                                l = l + 1
+                    # for i in lkframes:
+                    #     cv2.imwrite(ms, i)
+                    #     picture_of_others = face_recognition.load_image_file(ms)
+                    #     # print(pth)
+                    #     others_face_encoding = face_recognition.face_encodings(picture_of_others)
+                    #
+                    #     totface = len(others_face_encoding)
+                    #     # print("aaaaa", totface)
+                    #     for i in range(0, totface):
+                    #         res = face_recognition.compare_faces(knownimage, others_face_encoding[i], tolerance=0.45)
+                    #         l = 0
+                    #         for j in res:
+                    #             if j == True:
+                    #
+                    #                 # qryChk = "SELECT * FROM `myapp_suspiciousactivities` where `CRIMINAL_id`='"+str(knownids[i])+"' and `VIOLENCE_id`='"+str(id)+"'"
+                    #                 qryChk = "SELECT * FROM `myapp_suspiciousactivities` where `CRIMINAL_id`='" + str(knownids[i]) + "' "
+                    #
+                    #                 print(qryChk,'ssssssssssssss')
+                    #
+                    #                 resChk = db.select(qryChk)
+                    #                 print(len(resChk), 'leno')
+                    #                 if len(resChk)>0:
+                    #                     continue
+                    #                 else:
+                    #
+                    #                     # qry = "INSERT INTO `myapp_violencesub` (`STUDENT_id`,`VIOLENCE_id`) VALUES ('" + str(knownids[i]) + "','" + str(id) + "')"
+                    #                     # db.insert(qry)
+                    #                     qry = "INSERT INTO `myapp_suspiciousactivities` (`date`,`place`,`time`,`photo`,`activity`,`CRIMINAL_id`) VALUES (CURDATE(),'kozhikode',CURTIME(),'" + "/media/" + filename + "', 'Suspicious Activity Detected','" + str(knownids[i]) + "')"
+                    #                     print(qry,'qqqqqqqqqqqqqq')
+                    #                     res=db.insert(qry)
+                    #                     print(res,'iiiiiii')
+                    #
+                    #             l = l + 1
 
                 lkframes=[]
                 lkframes.append(frame)
@@ -198,7 +198,7 @@ def video_mamonreader(cv2,filename):
                 # Draw rectangle around the faces
                 for (x, y, w, h) in faces:
                     cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                # cv2.imshow("test", img)
+                cv2.imshow("test", img)
                 cv2.waitKey(1)
 
                 rval, frame = vc.read()
@@ -211,8 +211,8 @@ def video_mamonreader(cv2,filename):
                 count = count + 1
         # return frames
 
-        except:
-            break
+        except:pass
+            # break
 
 
     vc.release()
