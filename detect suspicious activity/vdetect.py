@@ -142,16 +142,20 @@ def video_mamonreader(cv2,filename):
 
                 if f== True:
 
-                    mediapath = "C:\\Users\\sidha\\OneDrive\\Documents\\Git\\PROJECT\\Aicctv\\media\\"
+                    mediapath = "C:\\Users\\sidharth\\Documents\\GitHub\\Aicctv\\media\\activity\\"
+
                     from datetime import datetime
                     filename = datetime.now().strftime("%Y%m%d%H%M%S") + ".jpg"
 
                     ms = mediapath + filename
+                    print(ms)
+                    cv2.imwrite(ms, frame)
+
                     db = Database()
                     # id = db.insert("INSERT INTO `myapp_violence` (`photo`,`date`,`time`) VALUES ('" + "/media/" + filename + "',CURDATE(),CURTIME())")
                     id = db.insert("INSERT INTO `myapp_suspiciousactivities` (`date`,`place`,`time`,`photo`,`activity`) "
-                                   "VALUES (CURDATE(),'kozhikode',CURTIME(),'" + "/media/" + filename + "','Suspicious Activity Detected')")
-
+                                   "VALUES (CURDATE(),'kozhikode',CURTIME(),'" + "/media/activity/" + filename + "','Suspicious Activity Detected')")
+                    print(id)
 
                     # for i in lkframes:
                     #     cv2.imwrite(ms, i)
